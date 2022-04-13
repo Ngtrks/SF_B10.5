@@ -1,0 +1,25 @@
+---
+- hosts: server
+  become: true
+  tasks:
+
+  - name: add user 'ngtrks' & exist group 'wheel'
+    user:
+      name: ngtrks
+      password: $6$AerkEWj7.Ai3Yprr$k7PrDR4qeUccyXu2SR97lRGQUeJqqnhsTN1uNNDnyJa9OwYrJASy2qWWkiHXGaKopGAj/LtnX31ueq3b3TzqQ1
+      shell: /bin/bash
+      groups: wheel
+      append: yes
+
+  - name: generate key
+    user:
+      name: ngtrks
+      generate_ssh_key: yes
+      ssh_key_bits: 2048
+      ssh_key_file: .ssh/id_rsa
+
+  - name: set authorized key from id_rsa.pub
+    authorized_key:
+      user: ngtrks
+      state: present
+      key: "{{ lookup('file', '/home/ngtrks/.ssh/id_rsa.pub') }}"
