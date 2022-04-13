@@ -3,9 +3,9 @@
   become: true
   tasks:
 
-  - name: add user 'ngtrks' & exist group 'wheel'
+  - name: add user 'user1' & exist group 'wheel'
     user:
-      name: ngtrks
+      name: user1
       password: $6$AerkEWj7.Ai3Yprr$k7PrDR4qeUccyXu2SR97lRGQUeJqqnhsTN1uNNDnyJa9OwYrJASy2qWWkiHXGaKopGAj/LtnX31ueq3b3TzqQ1
       shell: /bin/bash
       groups: wheel
@@ -13,13 +13,13 @@
 
   - name: generate key
     user:
-      name: ngtrks
+      name: user1
       generate_ssh_key: yes
       ssh_key_bits: 2048
       ssh_key_file: .ssh/id_rsa
 
   - name: set authorized key from id_rsa.pub
     authorized_key:
-      user: ngtrks
+      user: user1
       state: present
-      key: "{{ lookup('file', '/home/ngtrks/.ssh/id_rsa.pub') }}"
+      key: "{{ lookup('file', '/home/user1/.ssh/id_rsa.pub') }}"
